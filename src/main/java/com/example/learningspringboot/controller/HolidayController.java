@@ -6,16 +6,28 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.learningspringboot.model.Holiday;
 
 @Controller
-public class HolidayControlelr {
+public class HolidayController {
 
-    @RequestMapping(value = "/holidays", method = RequestMethod.GET)
-    public String displayHolidays(Model model) {
+    @RequestMapping(value = "/holidays/{display}", method = RequestMethod.GET)
+    public String displayHolidays(@PathVariable String display, Model model) {
+        if (display != null && display.equals("all")) {
+            model.addAttribute("festival", true);
+            model.addAttribute("federal", true);
+        } else if (display != null && display.equals("festival")) {
+            model.addAttribute("festival", true);
+            model.addAttribute("federal", false);
+        } else if (display != null && display.equals("federal")) {
+            model.addAttribute("federal", true);
+            model.addAttribute("festival", false);
+        }
         List<Holiday> holidays = Arrays.asList(
                 new Holiday(" Jan 1 ", "New Year's Day", Holiday.Type.FESTIVAL),
                 new Holiday(" Oct 31 ", "Halloween", Holiday.Type.FESTIVAL),
@@ -30,6 +42,7 @@ public class HolidayControlelr {
             model.addAttribute(type.toString(),
                     (holidays.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
         }
+
         return "holidays.html";
     }    
 }

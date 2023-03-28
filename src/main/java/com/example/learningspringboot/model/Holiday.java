@@ -1,5 +1,8 @@
 package com.example.learningspringboot.model;
 
+import lombok.Data;
+
+@Data
 public class Holiday {
     private final String day;
     private final String reason;
@@ -8,26 +11,6 @@ public class Holiday {
     public enum Type {
         FESTIVAL, FEDERAL
     };
-
-    public Holiday(String day, String season, Type type) {
-        this.day = day;
-        this.reason = season;
-        this.type = type;
-    }
-
-    public String getDay() {
-        return this.day;
-    }
-
-
-    public String getReason() {
-        return this.reason;
-    }
-
-
-    public Type getType() {
-        return this.type;
-    }
 }
 
    
