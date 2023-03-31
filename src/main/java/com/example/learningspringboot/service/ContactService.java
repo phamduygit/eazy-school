@@ -15,11 +15,7 @@ public class ContactService {
      */
     public boolean saveMessage(Contact contact) {
         boolean isSave = true;
-        log.info("Name: " + contact.getName());
-        log.info("Mobile number: " + contact.getMobileNum());
-        log.info("Email: " + contact.getEmail());
-        log.info("Subject: " + contact.getSubject());
-        log.info("Message: " + contact.getMessage());
+        log.info("Contact" + contact.toString());
         return isSave;
     }
 }
