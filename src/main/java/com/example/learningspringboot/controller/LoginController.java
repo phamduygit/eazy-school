@@ -30,13 +30,13 @@ public class LoginController {
         return "login.html";
     }
 
-    @RequestMapping(value = "/logout", method = {RequestMethod.GET})
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String displayLogoutPage(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, authentication);
         }
-        return "redirect:/login.html";
+        return "redirect:/login?logout=true";
     }
 
 }
