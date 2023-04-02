@@ -1,14 +1,12 @@
 package com.example.learningspringboot.config;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -34,6 +32,10 @@ public class ProjectSecurityConfig  {
                 .requestMatchers("/saveMsg").permitAll()
                 .requestMatchers("/holidays/**").permitAll()
                 .requestMatchers("/dashboard").authenticated()
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/logout").permitAll()
+                .requestMatchers("/displayMessages").hasRole("ADMIN")
+                .requestMatchers("/closeMsg").hasRole("ADMIN")
                 .and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard")
                 .failureUrl("/login?error=true").permitAll()
                 .and().logout().logoutSuccessUrl("/login?logout=true")
@@ -42,19 +44,12 @@ public class ProjectSecurityConfig  {
     }
 
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("12345")
-                .roles("USER")
-                .build();
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("54321")
-                .roles("USER","ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("user").password("123456").roles("USER")
+                .and()
+                .withUser("admin").password("123456").roles("ADMIN", "USER")
+                .and().passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 }
