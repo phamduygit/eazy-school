@@ -35,7 +35,7 @@ public class HolidayController {
             model.addAttribute("federal", true);
             model.addAttribute("festival", false);
         }
-        List<Holiday> holidays = holidaysService.findAllHolidays();
+        List<Holiday> holidays = holidaysService.findAll();
         Holiday.Type[] types = Holiday.Type.values();
         if (holidays.isEmpty()) {
             return "holidays.html";

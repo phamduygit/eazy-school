@@ -5,6 +5,8 @@ import com.example.learningspringboot.repository.HolidaysRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -16,7 +18,10 @@ public class HolidaysService {
         this.holidaysRepository = holidaysRepository;
     }
 
-    public List<Holiday> findAllHolidays() {
-        return holidaysRepository.findAllHolidays();
+    public List<Holiday> findAll() {
+        Iterable<Holiday> holidays = holidaysRepository.findAll();
+        List<Holiday> result = new ArrayList<Holiday>();
+        holidays.forEach(result::add);
+        return result;
     }
 }
