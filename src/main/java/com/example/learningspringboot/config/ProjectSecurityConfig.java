@@ -33,6 +33,7 @@ public class ProjectSecurityConfig  {
                 .requestMatchers("/holidays/**").permitAll()
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/login").permitAll()
+                .requestMatchers("/public/**").permitAll()
                 .requestMatchers("/logout").permitAll()
                 .requestMatchers("/displayMessages").hasRole("ADMIN")
                 .requestMatchers("/closeMsg").hasRole("ADMIN")

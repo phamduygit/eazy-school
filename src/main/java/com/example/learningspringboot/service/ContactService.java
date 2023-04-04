@@ -27,9 +27,7 @@ public class ContactService {
      */
     public boolean saveMessageDetails(Contact contact) {
         boolean isSave = false;
-        contact.setCreatedBy(EazySchoolConstants.ANONYMOUS);
         contact.setStatus(EazySchoolConstants.OPEN);
-        contact.setCreatedAt(LocalDateTime.now());
         Contact savedContact = contactRepository.save(contact);
         if (savedContact.getContactId() > 0) {
             isSave = true;
@@ -44,13 +42,11 @@ public class ContactService {
         return result;
     }
 
-    public boolean updateMessageStatus(int contactId, String updateBy) {
+    public boolean updateMessageStatus(int contactId) {
         boolean isUpdated = false;
         Optional<Contact> foundedContact = contactRepository.findById(contactId);
         foundedContact.ifPresent(contact -> {
             contact.setStatus(EazySchoolConstants.CLOSE);
-            contact.setUpdatedBy(updateBy);
-            contact.setUpdatedAt(LocalDateTime.now());
         });
         Contact updatedContact = contactRepository.save(foundedContact.get());
         if (updatedContact.getUpdatedBy() != null) {

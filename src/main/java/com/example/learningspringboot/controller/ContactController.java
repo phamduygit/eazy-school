@@ -39,7 +39,7 @@ public class ContactController {
     public String saveMessage(@Valid @ModelAttribute("contact") Contact contact, Errors errors) {
         if (errors.hasErrors()) {
             log.error("Contact form validation failed due to: " + errors.toString());
-            return "contact.html";
+            return "error.html";
         }
         contactService.saveMessageDetails(contact);
         return "redirect:/contact";
@@ -54,8 +54,8 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/closeMsg", method = RequestMethod.GET)
-    public String closeMessage(@RequestParam(value = "id", required = false) int contactId, Authentication authentication) {
-        contactService.updateMessageStatus(contactId, authentication.getName());
+    public String closeMessage(@RequestParam(value = "id", required = false) int contactId) {
+        contactService.updateMessageStatus(contactId);
         return "redirect:/displayMessages";
     }
 }
