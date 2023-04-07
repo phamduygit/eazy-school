@@ -24,7 +24,6 @@ import org.hibernate.annotations.GenericGenerator;
                 message = "Confirm email does not match!"
         )
 })
-@Table(name="person")
 public class Person extends BaseEntity{
 
     @Id
@@ -52,10 +51,19 @@ public class Person extends BaseEntity{
     @NotBlank(message = "Password must not be blank")
     @PasswordValidation
     @Size(min = 5, message = "Password must be at least 5 characters long")
+    @Column(name = "pwd")
     private String password;
 
     @NotBlank(message = "Confirm password must not be blank")
     @Size(min = 5, message = "Confirm password must be at least 5 characters long")
     @Transient
     private String confirmPassword;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Role.class)
+    @JoinColumn(name = "role_id", referencedColumnName = "roleId", nullable = false)
+    private Role role;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Address.class)
+    @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = false)
+    private Address address;
 }

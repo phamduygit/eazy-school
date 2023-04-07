@@ -1,11 +1,11 @@
 package com.example.learningspringboot.controller;
 
-import com.example.learningspringboot.model.Contact;
 import com.example.learningspringboot.model.Person;
 import com.example.learningspringboot.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -20,9 +20,13 @@ public class PublicController {
     private final PersonService personService;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     public PublicController(PersonService personService) {
         this.personService = personService;
     }
+
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String displayRegisterPage(Model model) {
@@ -36,7 +40,7 @@ public class PublicController {
         if (errors.hasErrors()) {
             return "register.html";
         }
-        boolean isSaved = personService.savePerson(person);
+        boolean isSaved = personService.createNewUser(person);
         if (isSaved) {
             return "redirect:/login?register=true";
         } else {

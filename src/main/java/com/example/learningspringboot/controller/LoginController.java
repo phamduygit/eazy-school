@@ -28,7 +28,7 @@ public class LoginController {
         if (Objects.equals(logout, "true")) {
             errorMessage = "You have been successfully logged out !";
         }
-        if (Objects.equals(logout, "true")) {
+        if (Objects.equals(register, "true")) {
             errorMessage = "You have been successfully register !";
         }
         model.addAttribute("errorMessage", errorMessage);
