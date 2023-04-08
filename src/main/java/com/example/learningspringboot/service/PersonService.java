@@ -32,4 +32,18 @@ public class PersonService {
         }
         return isSaved;
     }
+
+    public Person readByEmail(String email) {
+        return personRepository.readByEmail(email);
+    }
+
+    public Boolean save(Person person) {
+        boolean isSaved = false;
+        person = personRepository.save(person);
+        if (person.getPersonId() > 0)
+        {
+            isSaved = true;
+        }
+        return isSaved;
+    }
 }

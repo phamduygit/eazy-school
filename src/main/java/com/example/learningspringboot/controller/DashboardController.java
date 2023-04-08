@@ -1,5 +1,9 @@
 package com.example.learningspringboot.controller;
 
+import com.example.learningspringboot.model.Person;
+import com.example.learningspringboot.service.PersonService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class DashboardController {
+    @Autowired
+    private PersonService personService;
 
     @RequestMapping(value = "/dashboard", method = {RequestMethod.GET})
-    public String displayDashboardPage(Authentication authentication, Model model) {
-        model.addAttribute("username", authentication.getName());
+    public String displayDashboardPage(Authentication authentication, Model model, HttpSession httpSession) {
+        Person person = personService.readByEmail(authentication.getName());
+        model.addAttribute("username", person.getName());
         model.addAttribute("roles", authentication.getAuthorities().toString());
-//        throw new RuntimeException("It's been a bad day!!");
+        httpSession.setAttribute("personObject", person);
         return "dashboard.html";
     }
 }

@@ -32,7 +32,7 @@ public class EazySchoolUsernamePasswordAuthenticationProvider implements Authent
         String password = authentication.getCredentials().toString();
         Person person = personRepository.readByEmail(email);
         if (person != null && person.getPersonId() > 0 && passwordEncoder.matches(password, person.getPassword())) {
-            return new UsernamePasswordAuthenticationToken(person.getName(), password, getGrantedAuthorities(person.getRole()));
+            return new UsernamePasswordAuthenticationToken(email, null, getGrantedAuthorities(person.getRole()));
         } else {
             throw new BadCredentialsException("Invalid credentials");
         }
