@@ -9,6 +9,7 @@ import com.example.learningspringboot.service.PersonService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -100,7 +101,7 @@ public class AdminController {
 
     @RequestMapping(value = "/displayCourses", method = RequestMethod.GET)
     public String displayCourses(Model model) {
-        List<Course> courses = coursesService.findAll();
+        List<Course> courses = coursesService.findAll(Sort.by("name").descending());
         model.addAttribute("courses", courses);
         model.addAttribute("course", new Course());
         return "courses_secure.html";

@@ -3,6 +3,7 @@ package com.example.learningspringboot.service;
 import com.example.learningspringboot.model.Course;
 import com.example.learningspringboot.repository.CoursesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class CoursesService {
     @Autowired
     private CoursesRepository coursesRepository;
 
-    public List<Course> findAll() {
-        return coursesRepository.findAll();
+    public List<Course> findAll(Sort sort) {
+        return coursesRepository.findAll(sort);
     }
 
     public boolean save(Course course) {

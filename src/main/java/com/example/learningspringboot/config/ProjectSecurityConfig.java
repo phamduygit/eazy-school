@@ -41,7 +41,7 @@ public class ProjectSecurityConfig  {
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/public/**").permitAll()
                 .requestMatchers("/logout").permitAll()
-                .requestMatchers("/displayMessages").hasRole("ADMIN")
+                .requestMatchers("/displayMessages/**").hasRole("ADMIN")
                 .requestMatchers("/closeMsg").hasRole("ADMIN")
                 .and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard")
                 .failureUrl("/login?error=true").permitAll()
