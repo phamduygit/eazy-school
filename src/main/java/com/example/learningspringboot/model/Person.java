@@ -8,11 +8,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @FieldsValueMatch.list({
         @FieldsValueMatch(
@@ -79,5 +83,5 @@ public class Person extends BaseEntity{
                     @JoinColumn(name = "person_id", referencedColumnName = "personId")},
             inverseJoinColumns = {
                     @JoinColumn(name = "course_id", referencedColumnName = "courseId")})
-    private Set<Course> courses;
+    private Set<Course> courses = new HashSet<>();
 }

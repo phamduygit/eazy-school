@@ -2,13 +2,16 @@ package com.example.learningspringboot.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "courses")
 public class Course extends BaseEntity {
     @Id
@@ -21,5 +24,5 @@ public class Course extends BaseEntity {
     private String fees;
 
     @ManyToMany(mappedBy = "courses",fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private Set<Person> person = new HashSet<>();
+    private Set<Person> persons = new HashSet<>();
 }

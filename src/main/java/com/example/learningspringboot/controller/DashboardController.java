@@ -20,6 +20,9 @@ public class DashboardController {
         Person person = personService.findByEmail(authentication.getName());
         model.addAttribute("username", person.getName());
         model.addAttribute("roles", authentication.getAuthorities().toString());
+        if (null != person.getEazyClass() && null != person.getEazyClass().getName()) {
+            model.addAttribute("enrolledClass", person.getEazyClass().getName());
+        }
         httpSession.setAttribute("personObject", person);
         return "dashboard.html";
     }

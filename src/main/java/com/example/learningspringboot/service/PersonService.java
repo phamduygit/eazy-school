@@ -37,7 +37,7 @@ public class PersonService {
 
     public Person findByEmail(String email) {
         Optional<Person> person = personRepository.findByEmail(email);
-        return person.orElseGet(Person::new);
+        return person.orElse(null);
     }
 
     public Boolean updatePerson(Person person) {

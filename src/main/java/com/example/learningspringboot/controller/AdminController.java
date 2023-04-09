@@ -11,13 +11,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "admin")
@@ -114,11 +112,45 @@ public class AdminController {
         return "redirect:/admin/displayCourses";
     }
 
-    @RequestMapping(value = "/viewStudents")
-    public String viewStudents(@RequestParam int id, Model model) {
+    @RequestMapping(value = "/viewStudents", method = RequestMethod.GET)
+    public String viewStudents(@RequestParam int id, Model model, HttpSession httpSession, @RequestParam(required = false) String error) {
         Course course = coursesService.findById(id);
+        String errorMessage = "";
+        if(error != null) {
+            errorMessage = "You need create an account with this email!";
+            model.addAttribute("errorMessage", errorMessage);
+        }
+        httpSession.setAttribute("courseObject", course);
         model.addAttribute("courses", course);
         model.addAttribute("person", new Person());
         return "course_students.html";
+    }
+
+    @RequestMapping(value = "/addStudentToCourse", method = RequestMethod.POST)
+    public String addStudentToCourses(@ModelAttribute("person") Person person, HttpSession httpSession) {
+        Course course = (Course) httpSession.getAttribute("courseObject");
+        Person student = personService.findByEmail(person.getEmail());
+        if (student == null) {
+            return "redirect:/admin/viewStudents?id=" + course.getCourseId() + "&error=true";
+        }
+        course.getPersons().add(student);
+        student.getCourses().add(course);
+        personService.updatePerson(student);
+        httpSession.setAttribute("courseObject", course);
+        return "redirect:/admin/viewStudents?id=" + course.getCourseId();
+    }
+
+    @GetMapping("/deleteStudentFromCourse")
+    public ModelAndView deleteStudentFromCourse(Model model, @RequestParam int personId,
+                                                HttpSession session) {
+        Course courses = (Course) session.getAttribute("courseObject");
+        Person person = personService.findById(personId);
+        person.getCourses().remove(courses);
+        courses.getPersons().remove(person);
+        personService.updatePerson(person);
+        session.setAttribute("courseObject",courses);
+        ModelAndView modelAndView = new
+                ModelAndView("redirect:/admin/viewStudents?id="+courses.getCourseId());
+        return modelAndView;
     }
 }
