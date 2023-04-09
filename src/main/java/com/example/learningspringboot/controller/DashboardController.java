@@ -17,7 +17,7 @@ public class DashboardController {
 
     @RequestMapping(value = "/dashboard", method = {RequestMethod.GET})
     public String displayDashboardPage(Authentication authentication, Model model, HttpSession httpSession) {
-        Person person = personService.readByEmail(authentication.getName());
+        Person person = personService.findByEmail(authentication.getName());
         model.addAttribute("username", person.getName());
         model.addAttribute("roles", authentication.getAuthorities().toString());
         httpSession.setAttribute("personObject", person);

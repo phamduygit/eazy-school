@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PersonService {
     @Autowired
@@ -33,17 +35,23 @@ public class PersonService {
         return isSaved;
     }
 
-    public Person readByEmail(String email) {
-        return personRepository.readByEmail(email);
+    public Person findByEmail(String email) {
+        Optional<Person> person = personRepository.findByEmail(email);
+        return person.orElseGet(Person::new);
     }
 
-    public Boolean save(Person person) {
+    public Boolean updatePerson(Person person) {
         boolean isSaved = false;
-        person = personRepository.save(person);
-        if (person.getPersonId() > 0)
+        Person savedPerson = personRepository.save(person);
+        if (person.getPersonId() > 0 && person.getUpdatedAt() != null)
         {
             isSaved = true;
         }
         return isSaved;
+    }
+
+    public Person findById(int personId) {
+        Optional<Person> person = personRepository.findById(personId);
+        return person.orElseGet(Person::new);
     }
 }

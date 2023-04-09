@@ -2,7 +2,7 @@ package com.example.learningspringboot.security;
 
 import com.example.learningspringboot.model.Person;
 import com.example.learningspringboot.model.Role;
-import com.example.learningspringboot.repository.PersonRepository;
+import com.example.learningspringboot.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +21,7 @@ import java.util.List;
 public class EazySchoolUsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -30,7 +30,7 @@ public class EazySchoolUsernamePasswordAuthenticationProvider implements Authent
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
-        Person person = personRepository.readByEmail(email);
+        Person person = personService.findByEmail(email);
         if (person != null && person.getPersonId() > 0 && passwordEncoder.matches(password, person.getPassword())) {
             return new UsernamePasswordAuthenticationToken(email, null, getGrantedAuthorities(person.getRole()));
         } else {

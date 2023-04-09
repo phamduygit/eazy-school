@@ -57,7 +57,7 @@ public class ProfileController {
         person.getAddress().setCity(profile.getCity());
         person.getAddress().setState(profile.getState());
         person.getAddress().setZipCode(profile.getZipCode());
-        personService.save(person);
+        personService.updatePerson(person);
         return "redirect:/displayProfile";
     }
 

@@ -33,6 +33,7 @@ public class ProjectSecurityConfig  {
                 .requestMatchers("/contact").permitAll()
                 .requestMatchers("/saveMsg").permitAll()
                 .requestMatchers("/holidays/**").permitAll()
+                .requestMatchers("/admin/**").permitAll()
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/displayProfile").authenticated()
                 .requestMatchers("/updateProfile").authenticated()
